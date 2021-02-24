@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'user_model.dart';
 import 'package:http/http.dart' as http;
 
+import 'services.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -30,23 +32,6 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-Future<UserModel> createUser(String name, String jobTitle) async {
-  final String apiUrl = "https://reqres.in/api/users";
-
-  final response = await http.post(
-    apiUrl,
-    body: {"name": name, "job": jobTitle},
-  );
-
-  if (response.statusCode == 201) {
-    final String responseString = response.body;
-
-    return userModelFromJson(responseString);
-  } else {
-    return null;
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController jobController = TextEditingController();
@@ -72,7 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 16,
             ),
-            _user == null ? Container() : Text("${_user.name}"),
+            _user == null
+                ? Container()
+                : Text("${_user.name}  ${_user.createdAt}"),
           ],
         ),
       ),
